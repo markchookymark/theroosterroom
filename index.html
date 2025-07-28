@@ -2,7 +2,7 @@
   The Rooster Room 🐓
   Developer: MarkChookyMark
   GitHub: https://markchookymark.github.io/theroosterroom/
-  Date: 25/07/2025 (Updated with Timer)
+  Date: 28/07/2025 (Bug Fixes)
 -->
 
 <!DOCTYPE html>
@@ -537,12 +537,16 @@ wallPositions.forEach((pos, idx) => {
       if (paused || gameOver) return;
       raycaster.setFromCamera({ x: 0, y: 0 }, camera);
 
-      const roosterHit = raycaster.intersectObjects(roosterTargets);
-      if (roosterHit.length > 0) {
-        kills++;
-        explodeRooster(roosterHit[0].object);
-        return;
-      }
+const roosterHit = raycaster
+  .intersectObjects(roosterTargets)
+  .filter(hit => !hit.object.userData.isDead); // ignore dead ones
+
+if (roosterHit.length > 0) {
+  kills++;
+  explodeRooster(roosterHit[0].object);
+  return;
+}
+
 
       if (textMesh && raycaster.intersectObject(textMesh).length > 0) {
         explodeText();
@@ -566,24 +570,34 @@ wallPositions.forEach((pos, idx) => {
       }, 2000);
     }
 
-    function explodeRooster(rooster) {
-      explosionSound.currentTime = 0;
-      explosionSound.play();
-      const particles = createParticlesFromSprite(rooster, 0xffaa00, 15, 0.6);
-      scene.remove(rooster);
-      setTimeout(() => {
-        rooster.position.set(
-          (Math.random() - 0.5) * (floorSize - 200),
-          20,
-          (Math.random() - 0.5) * (floorSize - 200)
-        );
-        scene.add(rooster);
-      }, 2000);
-      setTimeout(() => {
-        scene.remove(particles);
-        disposeParticles(particles);
-      }, 1500);
-    }
+  function explodeRooster(rooster) {
+  // Mark as dead so it can't be hit again
+  rooster.userData.isDead = true;
+
+  explosionSound.currentTime = 0;
+  explosionSound.play();
+  const particles = createParticlesFromSprite(rooster, 0xffaa00, 15, 0.6);
+
+  scene.remove(rooster);
+
+  // Respawn after 2 seconds
+  setTimeout(() => {
+    rooster.position.set(
+      (Math.random() - 0.5) * (floorSize - 200),
+      20,
+      (Math.random() - 0.5) * (floorSize - 200)
+    );
+    rooster.userData.isDead = false; // Reactivate
+    scene.add(rooster);
+  }, 2000);
+
+  // Remove explosion particles
+  setTimeout(() => {
+    scene.remove(particles);
+    disposeParticles(particles);
+  }, 1500);
+}
+
 
     function createParticlesFromMesh(mesh, color, step, size) {
       const positionAttr = mesh.geometry.attributes.position;
