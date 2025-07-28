@@ -1,9 +1,8 @@
-
 <!-- 
   The Rooster Room 🐓
   Developer: MarkChookyMark
   GitHub: https://markchookymark.github.io/theroosterroom/
-  Date: 25/07/2025 
+  Date: 25/07/2025 (Updated with Timer)
 -->
 
 <!DOCTYPE html>
@@ -23,28 +22,40 @@
     /* Password Screen */
     #password-screen {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: #ffcc00;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       z-index: 5;
+      padding-top: 80px;
+    }
+    #password-screen h1 {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: #000;
+    }
+    #password-screen #logo {
+      width: 200px;
+      height: auto;
+      margin-bottom: 40px;
+    }
+    #password-screen .instructions-text {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #000;
     }
     #password-screen input {
       font-size: 18px;
       padding: 5px 10px;
-      margin-top: 10px;
     }
 
-    /* Instructions Screen (click-to-start) */
+    /* Instructions Screen */
     #instructions {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-size: 20px;
       color: white;
@@ -57,33 +68,20 @@
     /* Crosshair */
     #crosshair {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 20px;
-      height: 20px;
+      width: 20px; height: 20px;
       z-index: 2;
       pointer-events: none;
       display: none;
     }
-    #crosshair:before,
-    #crosshair:after {
+    #crosshair:before, #crosshair:after {
       content: '';
       position: absolute;
       background: #00FF00;
     }
-    #crosshair:before {
-      width: 2px;
-      height: 20px;
-      left: 9px;
-      top: 0;
-    }
-    #crosshair:after {
-      width: 20px;
-      height: 2px;
-      top: 9px;
-      left: 0;
-    }
+    #crosshair:before { width: 2px; height: 20px; left: 9px; top: 0; }
+    #crosshair:after { width: 20px; height: 2px; top: 9px; left: 0; }
 
     /* Pause text */
     #pause-text {
@@ -97,7 +95,7 @@
       z-index: 4;
     }
 
-    /* Controls display */
+    /* Controls info */
     #controls-info {
       position: absolute;
       bottom: 20px;
@@ -107,19 +105,106 @@
       z-index: 4;
       display: none;
     }
+
+    /* Sound toggle */
+    #sound-toggle {
+      position: absolute;
+      bottom: 170px;
+      left: 20px;
+      font-size: 20px;
+      padding: 5px 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 4;
+      display: none;
+    }
+    #sound-toggle:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Timer */
+    #timer {
+      position: absolute;
+      bottom: 40px;
+      right: 10px;
+      font-size: 28px;
+      color: red;
+      font-weight: bold;
+      z-index: 4;
+      display: none;
+    }
+
+    /* End screen */
+    #end-screen {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 6;
+      text-align: center;
+    }
+    #end-screen h1 {
+      color: red;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    #end-screen h2 {
+      color: orange;
+      font-size: 32px;
+      margin-bottom: 40px;
+    }
+    #play-again-btn {
+      background: #ffcc00;
+      padding: 12px 30px;
+      font-size: 22px;
+      border: none;
+      border-radius: 10px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    #play-again-btn:hover {
+      background: #ffaa00;
+      transform: scale(1.05);
+    }
+
+    /* Credits */
+    #credit {
+      position: absolute;
+      bottom: 10px; right: 10px;
+      font-size: 12px;
+      color: white;
+      opacity: 0.6;
+      z-index: 4;
+    }
   </style>
 </head>
 <body>
   <!-- Password screen -->
   <div id="password-screen">
-    <div>Enter password and hit 'Enter' to start the game</div>
+    <h1>The Rooster Room.</h1>
+    <img id="logo" src="TheRoosterGameLogoOP.png" alt="The Rooster Room Logo">
+    <div class="instructions-text">Enter password and hit 'Enter' to start the game</div>
     <input type="password" id="password-input" placeholder="Password" />
   </div>
 
-  <!-- Click-to-start -->
+  <!-- Instructions -->
   <div id="instructions">Click to enter rooster room</div>
   <div id="crosshair"></div>
   <div id="pause-text">pause? you can't pause life.</div>
+
+  <!-- Sound toggle -->
+  <button id="sound-toggle">🔊</button>
+
+  <!-- Controls info -->
   <div id="controls-info">
     W = Forwards<br>
     S = Backwards<br>
@@ -129,15 +214,17 @@
     Left Mouse Button = Shoot<br>
     ESC = Pause
   </div>
+  <div id="timer">1:00</div>
 
-    <!-- Credits -->
-  <div id="credit" style="
-    position: absolute;
-    bottom: 10px; right: 10px;
-    font-size: 12px;
-    color: white; opacity: 0.6;
-    z-index: 4;
-  ">© 2025 The Rooster Room by MarkChookyMark</div>
+  <!-- End screen -->
+  <div id="end-screen">
+    <h1>Ok, relax now.</h1>
+    <h2 id="kill-count-text"></h2>
+    <button id="play-again-btn">play again?</button>
+  </div>
+
+  <!-- Credits -->
+  <div id="credit">© 2025 The Rooster Room by MarkChookyMark</div>
 
   <!-- Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/build/three.min.js"></script>
@@ -147,10 +234,28 @@
 
   <script>
     let camera, scene, renderer, controls, textMesh, floorMesh, walls = [], raycaster;
-    let font;
-    let paused = false;
+    let font, paused = false, gameOver = false;
 
-    // Targets (roosters)
+    // Timer
+    let timerElement, timeRemaining = 60, lastTime = Date.now();
+
+    // Score
+    let kills = 0;
+
+    // UI Elements
+    const passwordScreen = document.getElementById("password-screen");
+    const passwordInput = document.getElementById("password-input");
+    const instructions = document.getElementById("instructions");
+    const crosshair = document.getElementById("crosshair");
+    const pauseText = document.getElementById("pause-text");
+    const controlsInfo = document.getElementById("controls-info");
+    timerElement = document.getElementById("timer");
+    const endScreen = document.getElementById("end-screen");
+    const killCountText = document.getElementById("kill-count-text");
+    const playAgainBtn = document.getElementById("play-again-btn");
+    const soundToggle = document.getElementById("sound-toggle");
+
+    // Targets
     let roosterTexture, roosterTargets = [];
 
     // Movement
@@ -169,21 +274,16 @@
     const missShotSound = new Audio("MissShot.mp3");
     explosionSound.volume = 0.6; jumpSound.volume = 0.6; footstepSound.volume = 0.4; missShotSound.volume = 0.5;
     let footstepCooldown = false;
+    let soundMuted = false;
 
-    // UI elements
-    const passwordScreen = document.getElementById("password-screen");
-    const passwordInput = document.getElementById("password-input");
-    const instructions = document.getElementById("instructions");
-    const crosshair = document.getElementById("crosshair");
-    const pauseText = document.getElementById("pause-text");
-    const controlsInfo = document.getElementById("controls-info");
-
+    // Password Screen Logic
     passwordInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         if (passwordInput.value === "markchooky") {
           passwordScreen.style.display = "none";
           instructions.style.display = "block";
           controlsInfo.style.display = "block";
+          soundToggle.style.display = "block";
           init();
         } else {
           alert("Incorrect password!");
@@ -191,6 +291,62 @@
       }
     });
 
+    // Sound Toggle
+    soundToggle.addEventListener("click", () => {
+      soundMuted = !soundMuted;
+      soundToggle.textContent = soundMuted ? "🔇" : "🔊";
+      [explosionSound, jumpSound, footstepSound, missShotSound].forEach(s => {
+        s.muted = soundMuted;
+      });
+    });
+
+    // Timer Update
+    function updateTimer() {
+      const now = Date.now();
+      const delta = (now - lastTime) / 1000; // seconds elapsed
+      lastTime = now;
+
+      if (!paused && !gameOver) {
+        timeRemaining -= delta;
+        if (timeRemaining <= 0) {
+          timeRemaining = 0;
+          endGame();
+        }
+        updateTimerDisplay();
+      }
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = Math.floor(timeRemaining % 60);
+      timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    // End Game
+    function endGame() {
+      gameOver = true;
+      paused = true;
+      controls.unlock();
+      crosshair.style.display = 'none';
+      timerElement.style.display = 'none';
+      killCountText.textContent = `YOU KILLED: ${kills} Chooks in 1 Minute.`;
+      endScreen.style.display = 'flex';
+    }
+
+    playAgainBtn.addEventListener('click', () => {
+      endScreen.style.display = 'none';
+      gameOver = false;
+      instructions.style.display = 'block';
+      kills = 0;
+      timeRemaining = 60;
+      timerElement.style.display = 'block';
+      lastTime = Date.now();
+      roosterTargets.forEach(r => scene.remove(r));
+      roosterTargets = [];
+      createRoosterTargets();
+    });
+
+    // Init Scene
     function init() {
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 4000);
       camera.position.set(0, 5, 30);
@@ -201,57 +357,94 @@
       const light = new THREE.HemisphereLight(0xffffff, 0x888888, 1.2);
       scene.add(light);
 
-      // Floor
-      const floorGeometry = new THREE.PlaneGeometry(floorSize, floorSize);
-      const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x343600 });
-      floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
-      floorMesh.rotation.x = -Math.PI / 2;
-      floorMesh.position.y = floorHeight;
-      scene.add(floorMesh);
+      // Floor with texture
+const floorTexture = new THREE.TextureLoader().load("grassfloorOP.png");
+floorTexture.wrapS = THREE.RepeatWrapping;
+floorTexture.wrapT = THREE.RepeatWrapping;
+floorTexture.repeat.set(20, 20); // adjust tiling density if needed
 
-      // Walls
-      const wallHeight = 100;
-      const wallThickness = 10;
-      const wallMaterial = new THREE.MeshStandardMaterial({ color: 0x888888 });
-      const wallPositions = [
-        [0, wallHeight / 2, floorSize / 2],
-        [0, wallHeight / 2, -floorSize / 2],
-        [-floorSize / 2, wallHeight / 2, 0],
-        [floorSize / 2, wallHeight / 2, 0],
-      ];
-      wallPositions.forEach((pos, idx) => {
-        const wallGeo = idx < 2
-          ? new THREE.BoxGeometry(floorSize, wallHeight, wallThickness)
-          : new THREE.BoxGeometry(wallThickness, wallHeight, floorSize);
-        const wall = new THREE.Mesh(wallGeo, wallMaterial);
-        wall.position.set(...pos);
-        scene.add(wall);
-        walls.push(wall);
-      });
+const floorGeometry = new THREE.PlaneGeometry(floorSize, floorSize);
+const floorMaterial = new THREE.MeshStandardMaterial({
+  map: floorTexture,
+});
+floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
+floorMesh.rotation.x = -Math.PI / 2;
+floorMesh.position.y = floorHeight;
+scene.add(floorMesh);
+
+
+      // Walls with lazer fence texture
+const wallHeight = 100;
+const wallThickness = 10;
+
+// Load lazer fence texture
+const wallTexture = new THREE.TextureLoader().load("lazerfence.png");
+wallTexture.wrapS = THREE.RepeatWrapping;
+wallTexture.wrapT = THREE.RepeatWrapping;
+wallTexture.repeat.set(10, 1); // repeat horizontally
+
+const wallMaterial = new THREE.MeshStandardMaterial({
+  map: wallTexture,
+  transparent: true,   // if your fence has transparency
+  side: THREE.DoubleSide
+});
+
+const wallPositions = [
+  [0, wallHeight / 2, floorSize / 2],
+  [0, wallHeight / 2, -floorSize / 2],
+  [-floorSize / 2, wallHeight / 2, 0],
+  [floorSize / 2, wallHeight / 2, 0],
+];
+
+wallPositions.forEach((pos, idx) => {
+  const wallGeo = idx < 2
+    ? new THREE.BoxGeometry(floorSize, wallHeight, wallThickness)
+    : new THREE.BoxGeometry(wallThickness, wallHeight, floorSize);
+  
+  const wall = new THREE.Mesh(wallGeo, wallMaterial);
+  wall.position.set(...pos);
+  scene.add(wall);
+  walls.push(wall);
+});
+
 
       // Controls
       controls = new THREE.PointerLockControls(camera, document.body);
-      instructions.addEventListener('click', () => controls.lock());
-
-      controls.addEventListener('lock', () => {
-        instructions.style.display = 'none';
-        crosshair.style.display = 'block';
-        paused = false;
-        pauseText.style.display = 'none';
+      instructions.addEventListener('click', () => {
+        if (!gameOver) {
+          controls.lock();
+          paused = false;
+          lastTime = Date.now(); // Reset timer
+        }
       });
 
       controls.addEventListener('unlock', () => {
+        if (gameOver) return;
         paused = true;
         crosshair.style.display = 'none';
         pauseText.style.display = 'block';
         instructions.style.display = 'block';
       });
 
-      // Toggle pause on ESC
+      controls.addEventListener('lock', () => {
+        if (gameOver) return;
+        instructions.style.display = 'none';
+        crosshair.style.display = 'block';
+        pauseText.style.display = 'none';
+        timerElement.style.display = "block";
+      });
+
+      // ESC logic
       document.addEventListener('keydown', (e) => {
-        if (e.code === "Escape") {
-          if (controls.isLocked) controls.unlock();
-          else controls.lock();
+        if (e.code === "Escape" && !gameOver) {
+          if (controls.isLocked) {
+            controls.unlock();
+            paused = true;
+          } else {
+            controls.lock();
+            paused = false;
+            lastTime = Date.now();
+          }
         }
       });
 
@@ -259,6 +452,7 @@
 
       // Movement keys
       document.addEventListener('keydown', (e) => {
+        if (paused || gameOver) return;
         switch (e.code) {
           case 'KeyW': move.forward = true; break;
           case 'KeyS': move.backward = true; break;
@@ -276,6 +470,7 @@
       });
 
       document.addEventListener('keyup', (e) => {
+        if (paused || gameOver) return;
         switch (e.code) {
           case 'KeyW': move.forward = false; break;
           case 'KeyS': move.backward = false; break;
@@ -339,17 +534,18 @@
     }
 
     function onClick() {
-      if (paused) return;
+      if (paused || gameOver) return;
       raycaster.setFromCamera({ x: 0, y: 0 }, camera);
-
-      if (textMesh && raycaster.intersectObject(textMesh).length > 0) {
-        explodeText();
-        return;
-      }
 
       const roosterHit = raycaster.intersectObjects(roosterTargets);
       if (roosterHit.length > 0) {
+        kills++;
         explodeRooster(roosterHit[0].object);
+        return;
+      }
+
+      if (textMesh && raycaster.intersectObject(textMesh).length > 0) {
+        explodeText();
         return;
       }
 
@@ -447,10 +643,12 @@
       particles.material.dispose();
     }
 
+    // Animate
     function animate() {
       requestAnimationFrame(animate);
+      updateTimer();
 
-      if (controls && controls.isLocked) {
+      if (controls && controls.isLocked && !paused && !gameOver) {
         const delta = 0.08;
         velocity.y -= gravity * delta;
         controls.getObject().position.y += velocity.y * delta;
@@ -472,6 +670,7 @@
           if (!footstepCooldown) {
             const step = footstepSound.cloneNode();
             step.volume = 0.4;
+            step.muted = soundMuted;
             step.playbackRate = 0.9 + Math.random() * 0.2;
             step.play();
             footstepCooldown = true;
@@ -494,17 +693,15 @@
         if (playerPos.z < -boundary) playerPos.z = -boundary;
       }
 
-      // Animate all active particle systems
+      // Animate particles
       scene.traverse((object) => {
         if (object.isPoints && object.velocities) {
           const positions = object.geometry.attributes.position.array;
           const velocities = object.velocities;
-
           for (let i = 0; i < positions.length; i += 3) {
             positions[i] += velocities[i] * 0.1;
             positions[i + 1] += velocities[i + 1] * 0.1;
             positions[i + 2] += velocities[i + 2] * 0.1;
-
             velocities[i] *= 0.98;
             velocities[i + 1] *= 0.98;
             velocities[i + 2] *= 0.98;
